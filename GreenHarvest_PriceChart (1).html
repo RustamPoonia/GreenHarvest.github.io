@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GreenHarvest Farms — Subscription Pricing</title>
+<style>
+@keyframes sway{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(3deg)}}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#eee;display:flex;justify-content:center;align-items:flex-start;min-height:100vh;padding:16px;font-family:sans-serif}
+.wrap{background:#f5f5f0;border-radius:20px;overflow:hidden;width:100%;max-width:480px}
+.top{background:linear-gradient(150deg,#0d3320 0%,#1A5C38 55%,#2E7D52 100%);padding:20px 16px 16px;text-align:center;position:relative;overflow:hidden}
+.leaf{position:absolute;opacity:0.15;pointer-events:none}
+.plant{display:block;margin:0 auto 7px;position:relative;z-index:2}
+.bname{font-size:20px;font-weight:800;color:#fff;position:relative;z-index:2}
+.btag{font-size:11px;color:#9fe1cb;margin-top:2px;position:relative;z-index:2}
+.body{padding:16px 14px 6px}
+.sel-label{font-size:11px;font-weight:700;color:#555;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.4px}
+.sel-row{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap}
+.mbtn{flex:1;min-width:58px;padding:8px 4px;border-radius:12px;border:1.5px solid #d8e8d4;background:#fff;cursor:pointer;text-align:center;transition:all .15s}
+.mbtn-icon{font-size:16px;display:block;margin-bottom:2px}
+.mbtn-num{font-size:13px;font-weight:700;color:#444;display:block}
+.mbtn-lbl{font-size:9px;color:#bbb;display:block}
+.mbtn.on{background:#1A5C38;border-color:#1A5C38}
+.mbtn.on .mbtn-num,.mbtn.on .mbtn-lbl{color:#fff}
+.mbtn.on .mbtn-lbl{color:#9fe1cb}
+.seg{display:flex;background:#e8e8e0;border-radius:12px;padding:3px;gap:2px}
+.sbtn{flex:1;padding:7px 4px;border-radius:9px;border:none;background:transparent;font-size:11px;font-weight:600;color:#777;cursor:pointer;transition:all .15s;text-align:center}
+.sbtn small{display:block;font-size:9px;font-weight:400;color:#aaa;margin-top:1px}
+.sbtn.on{background:#fff;color:#1A5C38;box-shadow:0 1px 4px rgba(0,0,0,0.1)}
+.sbtn.on small{color:#2E7D52}
+.dur-seg{display:flex;background:#e8e8e0;border-radius:12px;padding:3px;gap:2px}
+.dbtn{flex:1;padding:7px 4px;border-radius:9px;border:none;background:transparent;font-size:11px;font-weight:600;color:#777;cursor:pointer;transition:all .15s;text-align:center;position:relative}
+.dbtn small{display:block;font-size:8px;font-weight:400;color:#aaa;margin-top:1px}
+.dbtn.on{background:#fff;color:#1A5C38;box-shadow:0 1px 4px rgba(0,0,0,0.1)}
+.dbtn.on small{color:#2E7D52}
+.disc-badge{position:absolute;top:-7px;right:2px;background:#E07B18;color:#fff;font-size:8px;font-weight:700;padding:1px 5px;border-radius:8px;white-space:nowrap}
+.ldiv{display:flex;align-items:center;gap:8px;margin:12px 14px}
+.ldiv-line{flex:1;height:1px;background:#ddd}
+.boxes{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px}
+.box{border-radius:14px;overflow:hidden;border:2px solid #e0e0d8;background:#fff;transition:all .2s}
+.box.pop{border-color:#1A5C38;transform:scale(1.03)}
+.box-hdr{padding:12px 8px 9px;text-align:center;position:relative;overflow:hidden}
+.box-hdr.gr{background:#1A5C38}
+.box-hdr.am{background:#7A4800}
+.box-hdr.bl{background:#0C447C}
+.hdr-deco{position:absolute;opacity:0.12;pointer-events:none;top:-4px;right:-4px}
+.pbadge{display:inline-block;background:#fff;font-size:8px;font-weight:800;padding:2px 7px;border-radius:8px;margin-bottom:3px}
+.pbadge.gr{color:#1A5C38}.pbadge.am{color:#7A4800}.pbadge.bl{color:#0C447C}
+.bicon{font-size:18px;display:block;margin-bottom:2px;animation:bob 3s ease-in-out infinite}
+.bname2{font-size:12px;font-weight:800;color:#fff}
+.bideal{font-size:9px;color:rgba(255,255,255,0.65);margin-top:1px}
+.box-body{padding:10px 8px 9px}
+.price-big{font-size:22px;font-weight:800;color:#1a1a1a;text-align:center;line-height:1}
+.price-orig{font-size:10px;color:#bbb;text-align:center;text-decoration:line-through;min-height:14px;margin-top:1px}
+.price-mo{font-size:9px;color:#999;text-align:center}
+.per-del{font-size:10px;color:#2E7D52;font-weight:700;text-align:center;margin-top:4px}
+.pp-pill{display:block;width:fit-content;margin:4px auto;background:#EAF3DE;border-radius:20px;padding:2px 8px;font-size:9px;color:#27500A;font-weight:700}
+.div-sm{height:1px;background:#f0f0e8;margin:7px 0}
+.veg-pills{display:flex;flex-wrap:wrap;gap:3px;justify-content:center;margin-bottom:2px}
+.vp{font-size:8px;padding:2px 5px;border-radius:6px}
+.vp.s{background:#EAF3DE;color:#27500A}
+.vp.e{background:#E6F1FB;color:#0C447C;font-weight:700}
+.vp.f{background:#f0f0e8;color:#666;font-style:italic}
+.save-bar{margin-top:6px;background:#EAF3DE;border-radius:7px;padding:3px 5px;text-align:center;font-size:8px;color:#27500A;font-weight:700}
+.note{background:#fff;border-radius:12px;border-left:4px solid #1A5C38;border-right:1.5px solid #d0e8d4;border-top:1.5px solid #d0e8d4;border-bottom:1.5px solid #d0e8d4;padding:10px 13px;text-align:center;margin-bottom:10px}
+.note strong{color:#1A5C38}
+.foot{background:linear-gradient(135deg,#0d3320,#1A5C38);padding:14px;text-align:center}
+.foot-num{font-size:14px;font-weight:800;color:#fff}
+.foot-tag{font-size:10px;color:#9fe1cb;margin-top:2px}
+.wa-btn{display:inline-flex;align-items:center;gap:5px;background:#25D366;border-radius:20px;padding:6px 14px;margin-top:8px;font-size:11px;font-weight:700;color:#fff;border:none;cursor:pointer}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <svg class="leaf" style="top:-15px;left:-15px;animation:sway 4s ease-in-out infinite" width="120" height="120" viewBox="0 0 120 120">
+      <ellipse cx="60" cy="60" rx="54" ry="28" fill="#fff" transform="rotate(-35 60 60)"/>
+      <line x1="60" y1="20" x2="60" y2="100" stroke="#9fe1cb" stroke-width="2" transform="rotate(-35 60 60)"/>
+      <line x1="44" y1="52" x2="76" y2="42" stroke="#9fe1cb" stroke-width="1.4" transform="rotate(-35 60 60)"/>
+      <line x1="43" y1="65" x2="77" y2="55" stroke="#9fe1cb" stroke-width="1.4" transform="rotate(-35 60 60)"/>
+    </svg>
+    <svg class="leaf" style="top:-8px;right:-8px;animation:sway 5s ease-in-out infinite 1s" width="100" height="100" viewBox="0 0 100 100">
+      <ellipse cx="50" cy="50" rx="44" ry="22" fill="#fff" transform="rotate(40 50 50)"/>
+      <line x1="50" y1="18" x2="50" y2="82" stroke="#9fe1cb" stroke-width="2" transform="rotate(40 50 50)"/>
+      <line x1="36" y1="44" x2="64" y2="36" stroke="#9fe1cb" stroke-width="1.4" transform="rotate(40 50 50)"/>
+    </svg>
+    <svg class="leaf" style="bottom:-18px;left:25%;animation:sway 6s ease-in-out infinite 0.5s" width="80" height="80" viewBox="0 0 80 80">
+      <ellipse cx="40" cy="40" rx="36" ry="18" fill="#fff" transform="rotate(12 40 40)"/>
+      <line x1="40" y1="14" x2="40" y2="66" stroke="#9fe1cb" stroke-width="1.4" transform="rotate(12 40 40)"/>
+    </svg>
+    <svg class="plant" width="42" height="42" viewBox="0 0 42 42">
+      <rect x="18" y="28" width="6" height="11" rx="3" fill="#5D4037"/>
+      <ellipse cx="15" cy="17" rx="7" ry="12" fill="#4CAF50" transform="rotate(-18 15 17)"/>
+      <line x1="15" y1="7" x2="15" y2="29" stroke="#2E7D52" stroke-width="1.5" transform="rotate(-18 15 17)"/>
+      <line x1="9" y1="17" x2="21" y2="13" stroke="#2E7D52" stroke-width="1" transform="rotate(-18 15 17)"/>
+      <ellipse cx="27" cy="15" rx="7" ry="11" fill="#66BB6A" transform="rotate(18 27 15)"/>
+      <line x1="27" y1="6" x2="27" y2="26" stroke="#3B6D11" stroke-width="1.5" transform="rotate(18 27 15)"/>
+    </svg>
+    <div class="bname">GreenHarvest Farms</div>
+    <div class="btag">Farm-direct · No chemicals · Gurgaon doorstep delivery</div>
+  </div>
+
+  <div class="body">
+    <div class="sel-label">Family members</div>
+    <div class="sel-row" id="mrow">
+      <button class="mbtn" onclick="setM(1)"><span class="mbtn-icon">🧑</span><span class="mbtn-num">1</span><span class="mbtn-lbl">solo</span></button>
+      <button class="mbtn" onclick="setM(2)"><span class="mbtn-icon">👫</span><span class="mbtn-num">2</span><span class="mbtn-lbl">couple</span></button>
+      <button class="mbtn on" onclick="setM(3)"><span class="mbtn-icon">👨‍👩‍👦</span><span class="mbtn-num">3</span><span class="mbtn-lbl">family</span></button>
+      <button class="mbtn" onclick="setM(4)"><span class="mbtn-icon">👨‍👩‍👧‍👦</span><span class="mbtn-num">4</span><span class="mbtn-lbl">family</span></button>
+    </div>
+
+    <div class="sel-label" style="margin-top:10px">Delivery frequency</div>
+    <div class="seg" id="frow">
+      <button class="sbtn on" onclick="setF(1)">Once a week<small>4 deliveries/month</small></button>
+      <button class="sbtn" onclick="setF(2)">Twice a week<small>8 deliveries/month</small></button>
+    </div>
+
+    <div class="sel-label" style="margin-top:10px">Subscription plan</div>
+    <div class="dur-seg" id="drow">
+      <button class="dbtn on" onclick="setD(0)">Trial<small>1 delivery</small></button>
+      <button class="dbtn" onclick="setD(1)">Monthly<small>no lock-in</small></button>
+      <button class="dbtn" onclick="setD(2)">3 Months<div class="disc-badge">5% off</div><small>save more</small></button>
+      <button class="dbtn" onclick="setD(3)">6 Months<div class="disc-badge">10% off</div><small>best value</small></button>
+    </div>
+  </div>
+
+  <div class="ldiv">
+    <div class="ldiv-line"></div>
+    <svg width="24" height="24" viewBox="0 0 24 24">
+      <ellipse cx="9" cy="12" rx="4" ry="8" fill="#4CAF50" transform="rotate(-18 9 12)"/>
+      <line x1="9" y1="6" x2="9" y2="20" stroke="#2E7D52" stroke-width="1" transform="rotate(-18 9 12)"/>
+      <ellipse cx="15" cy="10" rx="4" ry="7" fill="#66BB6A" transform="rotate(18 15 10)"/>
+      <line x1="15" y1="5" x2="15" y2="18" stroke="#3B6D11" stroke-width="1" transform="rotate(18 15 10)"/>
+    </svg>
+    <div class="ldiv-line"></div>
+  </div>
+
+  <div style="padding:0 14px">
+    <div class="boxes" id="boxes"></div>
+    <div class="note" id="note"></div>
+  </div>
+
+  <div class="foot">
+    <div class="foot-num">+91 89056 94001</div>
+    <div class="foot-tag">WhatsApp to subscribe or try a sample · Gurgaon only</div>
+    <a class="wa-btn" href="https://wa.me/918905694001?text=Hi%20GreenHarvest%20Farms!%20I%20am%20interested%20in%20subscribing%20to%20a%20vegetable%20box.%20Please%20share%20more%20details." target="_blank" style="text-decoration:none">
+      <svg width="13" height="13" viewBox="0 0 13 13"><circle cx="6.5" cy="6.5" r="6" fill="#fff"/><path d="M3.5 6.5c0-1.66 1.34-3 3-3s3 1.34 3 3-1.34 3-3 3c-.52 0-1.01-.14-1.44-.39L2 10l.39-2.56A2.98 2.98 0 013.5 6.5z" fill="#25D366"/></svg>
+      Message us on WhatsApp
+    </a>
+  </div>
+</div>
+
+<script>
+const BASE={1:{fresh:1299,select:1699,sig:2499},2:{fresh:1499,select:1999,sig:2999},3:{fresh:1999,select:2599,sig:3699},4:{fresh:2499,select:3199,sig:4499}};
+const KG={1:[2,1.2],2:[3.5,2],3:[5,2.75],4:[6.5,3.5]};
+const DURS=[
+  {label:'Trial box',months:0,disc:0,pay:'one-time delivery'},
+  {label:'Monthly',months:1,disc:0,pay:'per month'},
+  {label:'3 Months',months:3,disc:5,pay:'billed every 3 months'},
+  {label:'6 Months',months:6,disc:10,pay:'billed every 6 months'},
+];
+const BOXES=[
+  {key:'fresh',name:'Fresh Box',hdr:'gr',icon:'🥬',ideal:'Daily staples',
+   vegs:['Potato','Onion','Tomato','Spinach','Brinjal','Okra','Bottle gourd','Cucumber','Chilli','Ginger'],
+   exotic:[],free:'Coriander+Mint free',pop:false},
+  {key:'select',name:'Select Box',hdr:'am',icon:'🌿',ideal:'Staples + exotic',
+   vegs:['All Fresh items','Capsicum','Ridge gourd','Cluster beans','Pumpkin'],
+   exotic:['Mushroom or Cherry tomato'],free:'Coriander+Mint+Curry free',pop:true},
+  {key:'sig',name:'Signature',hdr:'bl',icon:'✨',ideal:'Full exotic variety',
+   vegs:['All Select items','Bitter gourd','Baby corn','Beetroot','Spring onion'],
+   exotic:['Mushroom','Cherry tomato','French beans','Baby corn','Beetroot'],
+   free:'Herbs+Dill free',pop:false},
+];
+let M=3,F=1,D=0;
+function setM(m){M=m;document.querySelectorAll('#mrow .mbtn').forEach((b,i)=>b.classList.toggle('on',i+1===m));render()}
+function setF(f){F=f;document.querySelectorAll('#frow .sbtn').forEach((b,i)=>b.classList.toggle('on',i+1===f));render()}
+function setD(d){D=d;document.querySelectorAll('#drow .dbtn').forEach((b,i)=>b.classList.toggle('on',i===d));render()}
+function fmt(n){return '₹'+Math.round(n).toLocaleString('en-IN')}
+function render(){
+  const dur=DURS[D];
+  const kg=KG[M][F-1];
+  const dels=F===1?4:8;
+  const isTrial=D===0;
+  let html='';
+  BOXES.forEach(b=>{
+    const baseM=BASE[M][b.key];
+    const discM=Math.round(baseM*(1-dur.disc/100));
+    let displayPrice,origPrice=null;
+    if(isTrial){
+      displayPrice=Math.round(baseM/dels*1.15);
+    } else if(dur.months===1){
+      displayPrice=baseM;
+    } else {
+      displayPrice=Math.round(discM*dur.months);
+      origPrice=fmt(baseM*dur.months);
+    }
+    const perDel=isTrial?displayPrice:Math.round(discM/dels);
+    const pp=Math.round(perDel/(M<2?1:M));
+    const walkIn=Math.round(perDel*1.28/50)*50;
+    const saving=isTrial?0:Math.round((walkIn-perDel)*dels*(dur.months||1));
+    html+=`<div class="box ${b.pop?'pop':''}">
+      <div class="box-hdr ${b.hdr}">
+        <svg class="hdr-deco" width="40" height="40" viewBox="0 0 40 40"><ellipse cx="20" cy="20" rx="17" ry="9" fill="#fff" transform="rotate(30 20 20)"/><line x1="20" y1="10" x2="20" y2="30" stroke="rgba(255,255,255,0.6)" stroke-width="1" transform="rotate(30 20 20)"/></svg>
+        ${b.pop?`<div><span class="pbadge ${b.hdr}">POPULAR</span></div>`:''}
+        <span class="bicon">${b.icon}</span>
+        <div class="bname2">${b.name}</div>
+        <div class="bideal">${b.ideal}</div>
+      </div>
+      <div class="box-body">
+        <div class="price-big">${fmt(displayPrice)}</div>
+        <div class="price-orig">${origPrice||''}</div>
+        <div class="price-mo">${dur.pay}</div>
+        <div class="per-del">${fmt(perDel)}/delivery · ~${kg}kg</div>
+        <span class="pp-pill">${fmt(pp)}/person/delivery</span>
+        <div class="div-sm"></div>
+        <div class="veg-pills">${b.vegs.slice(0,4).map(v=>`<span class="vp s">${v}</span>`).join('')}${b.vegs.length>4?`<span class="vp s">+${b.vegs.length-4} more</span>`:''}</div>
+        ${b.exotic.length?`<div class="veg-pills" style="margin-top:2px">${b.exotic.slice(0,2).map(e=>`<span class="vp e">${e}</span>`).join('')}</div>`:''}
+        <div class="veg-pills" style="margin-top:2px"><span class="vp f">${b.free}</span></div>
+        ${saving>0?`<div class="save-bar">Save ${fmt(saving)} total${dur.disc>0?' · '+dur.disc+'% off':''}</div>`:''}
+      </div>
+    </div>`;
+  });
+  document.getElementById('boxes').innerHTML=html;
+  const sigPP=fmt(Math.round(Math.round(BASE[M].sig*(1-dur.disc/100))/dels/(M<2?1:M)));
+  const mLabel={1:'Solo',2:'Couple',3:'Family of 3',4:'Family of 4'}[M];
+  document.getElementById('note').innerHTML=`<div style="font-size:12px;color:#333;line-height:1.7">
+    <strong>${mLabel} · ${F===1?'Weekly':'Twice-weekly'} · ${dur.label}</strong><br>
+    ${isTrial?'Try before you subscribe — one delivery, no commitment. Like it? Subscribe with one WhatsApp message.':
+    `Signature box = <strong>${sigPP}/person/delivery</strong> — less than a cafe coffee ☕ for farm-fresh vegetables picked the same morning.`}
+  </div><div style="font-size:10px;color:#aaa;margin-top:4px">Free herb bunch every delivery · Cancel anytime · Gurgaon only</div>`;
+}
+render();
+</script>
+</body>
+</html>
